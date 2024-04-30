@@ -1,45 +1,32 @@
 import React from "react";
-import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { setCell } from "../features/gameBoard/gameBoardSlice";
+import { changePlayer } from "../features/gameStatus/gameStatusSlice";
 
 export default function Field() {
 
-    const [clickedSquare, setClickedSquare] = useState(null);
+    const dispatch = useDispatch();
+    const board = useSelector((state) => state.gameBoard.board)
+    const activePlayer = useSelector((state) => state.gameStatus.activePlayer)
 
-    function handleClick(square) {
-        setClickedSquare(square);
+    function handleCellClick(event, row, col) {
+        const cellValue = board[row][col];
+        if (!cellValue) {
+            dispatch(setCell({ row, col, value: activePlayer.sign }))
+            dispatch(changePlayer(activePlayer.number === 1 ? 1 : 0))
+        }
     }
 
-    return(
+    return (
         <div className="container">
             <h1>Tic Tac Toe</h1>
             <div className="field-container">
-            <div className={`field-square top-left ${clickedSquare === "top-left" ? "clicked" : ""}`} onClick={() => handleClick("top-left")}>
-                    {clickedSquare === "top-left" && <span>X</span>}
-                </div>
-                <div className={`field-square ${clickedSquare === "top" ? "clicked" : ""}`} onClick={() => handleClick("top")}>
-                    {clickedSquare === "top" && <span>X</span>}
-                </div>
-                <div className={`field-square top-right ${clickedSquare === "top-right" ? "clicked" : ""}`} onClick={() => handleClick("top-right")}>
-                    {clickedSquare === "top-right" && <span>X</span>}
-                </div>
-                <div className={`field-square ${clickedSquare === "left" ? "clicked" : ""}`} onClick={() => handleClick("left")}>
-                    {clickedSquare === "left" && <span>X</span>}
-                </div>
-                <div className={`field-square ${clickedSquare === "center" ? "clicked" : ""}`} onClick={() => handleClick("center")}>
-                    {clickedSquare === "center" && <span>X</span>}
-                </div>
-                <div className={`field-square ${clickedSquare === "right" ? "clicked" : ""}`} onClick={() => handleClick("right")}>
-                    {clickedSquare === "right" && <span>X</span>}
-                </div>
-                <div className={`field-square bottom-left ${clickedSquare === "bottom-left" ? "clicked" : ""}`} onClick={() => handleClick("bottom-left")}>
-                    {clickedSquare === "bottom-left" && <span>X</span>}
-                </div>
-                <div className={`field-square ${clickedSquare === "bottom" ? "clicked" : ""}`} onClick={() => handleClick("bottom")}>
-                    {clickedSquare === "bottom" && <span>X</span>}
-                </div>
-                <div className={`field-square bottom-right ${clickedSquare === "bottom-right" ? "clicked" : ""}`} onClick={() => handleClick("bottom-right")}>
-                    {clickedSquare === "bottom-right" && <span>X</span>}
-                </div>
+                {board.map((boardRow, boardRowId) =>
+                    boardRow.map((boardCol, boardColId) =>
+                        <div className="field-square" onClick={(event) => handleCellClick(event, boardRowId, boardColId)}>
+                            {board[boardRowId][boardColId]}
+                        </div>))}
             </div>
         </div>
     )
