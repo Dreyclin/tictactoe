@@ -34,3 +34,18 @@ h1 {
     font-size: 4rem;
     color: #e44892;
 }
+
+.winner-container {
+    position: absolute;
+    left: 40%;
+    top: 35%;
+    padding: 2rem;
+    background-color: #ffc3a0;
+    border-radius: 10px;
+}
+
+.winner-container h2 {
+    font-size: 4rem;
+    padding: 2rem;
+    color: #604089;
+}

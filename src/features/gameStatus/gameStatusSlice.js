@@ -42,10 +42,14 @@ const gameStatusSlice = createSlice({
                     state.winner = line[0];
                 }
             })
+        },
+        resetGame(state, action) {
+            state.winner = null;
+            state.activePlayer = players[0];
         }
     }
 })
 
-export const {changePlayer, checkWinner} = gameStatusSlice.actions
+export const {changePlayer, checkWinner, resetGame} = gameStatusSlice.actions
 
 export default gameStatusSlice.reducer
